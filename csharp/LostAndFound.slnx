@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="LostAndFound/LostAndFound.csproj" />
+  <Project Path="LostAndFound.Tests/LostAndFound.Tests.csproj" />
+</Solution>
