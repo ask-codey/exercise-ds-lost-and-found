@@ -1,17 +1,16 @@
-# Tries your functions on the lost-and-found. Run it with: python demo.py
-from lost_and_found import item_in_cubby, looks_in_box, looks_on_shelf
+# Tries the desk on eight items. Run it with: python demo.py
+from lost_and_found import Desk
 
-box = ["Red Umbrella", "Math Textbook", "Left Mitten", "Green Water Bottle", "Bike Helmet", "Phone Charger", "Blue Water Bottle", "Soccer Ball"]
-shelves = {
-    "Bottles": ["Green Water Bottle", "Blue Water Bottle"],
-    "Books": ["Math Textbook"],
-    "Clothing": ["Left Mitten"],
-    "Sports": ["Bike Helmet", "Soccer Ball"],
-    "Other": ["Red Umbrella", "Phone Charger"],
-}
-cubbies = list(box)
+items = [("Red Umbrella", "Other"), ("Math Textbook", "Books"), ("Left Mitten", "Clothing"),
+         ("Green Water Bottle", "Bottles"), ("Bike Helmet", "Sports"), ("Phone Charger", "Other"),
+         ("Blue Water Bottle", "Bottles"), ("Soccer Ball", "Sports")]
 
-print("Box: " + ", ".join(box))
-print(f"Looks in the box for Blue Water Bottle: {looks_in_box(box, 'Blue Water Bottle')}")
-print(f"Looks on the Bottles shelf for Blue Water Bottle: {looks_on_shelf(shelves, 'Bottles', 'Blue Water Bottle')}")
-print(f"Cubby 6 holds: {item_in_cubby(cubbies, 6)}")
+desk = Desk()
+for item, kind in items:
+    desk.add(item, kind)
+
+for item, kind in [("Blue Water Bottle", "Bottles"), ("Purple Scarf", "Clothing")]:
+    before = desk.looks
+    answer = "yes" if desk.find(item, kind) else "no"
+    print(f"{item} ({kind}): {answer}, looks: {desk.looks - before}")
+print(f"Tag 6: {desk.item_with_tag(6)}")

@@ -1,17 +1,18 @@
-// Tries your functions on the lost-and-found. Run it with: node demo.js
-import { itemInCubby, looksInBox, looksOnShelf } from "./lost-and-found.js";
+// Tries the desk on eight items. Run it with: node demo.js
+import { Desk } from "./lost-and-found.js";
 
-const box = ["Red Umbrella", "Math Textbook", "Left Mitten", "Green Water Bottle", "Bike Helmet", "Phone Charger", "Blue Water Bottle", "Soccer Ball"];
-const shelves = {
-  Bottles: ["Green Water Bottle", "Blue Water Bottle"],
-  Books: ["Math Textbook"],
-  Clothing: ["Left Mitten"],
-  Sports: ["Bike Helmet", "Soccer Ball"],
-  Other: ["Red Umbrella", "Phone Charger"],
-};
-const cubbies = [...box];
+const items = [["Red Umbrella", "Other"], ["Math Textbook", "Books"], ["Left Mitten", "Clothing"],
+  ["Green Water Bottle", "Bottles"], ["Bike Helmet", "Sports"], ["Phone Charger", "Other"],
+  ["Blue Water Bottle", "Bottles"], ["Soccer Ball", "Sports"]];
 
-console.log("Box: " + box.join(", "));
-console.log(`Looks in the box for Blue Water Bottle: ${looksInBox(box, "Blue Water Bottle")}`);
-console.log(`Looks on the Bottles shelf for Blue Water Bottle: ${looksOnShelf(shelves, "Bottles", "Blue Water Bottle")}`);
-console.log(`Cubby 6 holds: ${itemInCubby(cubbies, 6)}`);
+const desk = new Desk();
+for (const [item, kind] of items) {
+  desk.add(item, kind);
+}
+
+for (const [item, kind] of [["Blue Water Bottle", "Bottles"], ["Purple Scarf", "Clothing"]]) {
+  const before = desk.looks;
+  const answer = desk.find(item, kind) ? "yes" : "no";
+  console.log(`${item} (${kind}): ${answer}, looks: ${desk.looks - before}`);
+}
+console.log(`Tag 6: ${desk.itemWithTag(6)}`);

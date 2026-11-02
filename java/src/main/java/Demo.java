@@ -1,23 +1,23 @@
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-// Tries your methods on the lost-and-found. Run it with: java src/main/java/Demo.java
+// Tries the desk on eight items. Run it with: java src/main/java/Demo.java
 public class Demo {
     public static void main(String[] args) {
-        List<String> box = List.of("Red Umbrella", "Math Textbook", "Left Mitten", "Green Water Bottle", "Bike Helmet", "Phone Charger", "Blue Water Bottle", "Soccer Ball");
-        Map<String, List<String>> shelves = new LinkedHashMap<>();
-        shelves.put("Bottles", List.of("Green Water Bottle", "Blue Water Bottle"));
-        shelves.put("Books", List.of("Math Textbook"));
-        shelves.put("Clothing", List.of("Left Mitten"));
-        shelves.put("Sports", List.of("Bike Helmet", "Soccer Ball"));
-        shelves.put("Other", List.of("Red Umbrella", "Phone Charger"));
-        List<String> cubbies = new ArrayList<>(box);
+        String[][] items = {
+            {"Red Umbrella", "Other"}, {"Math Textbook", "Books"}, {"Left Mitten", "Clothing"},
+            {"Green Water Bottle", "Bottles"}, {"Bike Helmet", "Sports"}, {"Phone Charger", "Other"},
+            {"Blue Water Bottle", "Bottles"}, {"Soccer Ball", "Sports"}
+        };
 
-        System.out.println("Box: " + String.join(", ", box));
-        System.out.println("Looks in the box for Blue Water Bottle: " + Finder.looksInBox(box, "Blue Water Bottle"));
-        System.out.println("Looks on the Bottles shelf for Blue Water Bottle: " + Finder.looksOnShelf(shelves, "Bottles", "Blue Water Bottle"));
-        System.out.println("Cubby 6 holds: " + Finder.itemInCubby(cubbies, 6));
+        Desk desk = new Desk();
+        for (String[] item : items) {
+            desk.add(item[0], item[1]);
+        }
+
+        String[][] requests = {{"Blue Water Bottle", "Bottles"}, {"Purple Scarf", "Clothing"}};
+        for (String[] request : requests) {
+            int before = desk.looks();
+            String answer = desk.find(request[0], request[1]) ? "yes" : "no";
+            System.out.println(request[0] + " (" + request[1] + "): " + answer + ", looks: " + (desk.looks() - before));
+        }
+        System.out.println("Tag 6: " + desk.itemWithTag(6));
     }
 }

@@ -1,42 +1,53 @@
-// Your three functions. The comment above each one says what it should
-// return, with examples. Replace each return line with your own code.
+// The lost-and-found desk. The comment above each method says what it
+// should do, with examples. Change the code so the desk keeps up with
+// the lunch line, and write each method's growth rate in its comment.
+export class Desk {
+  box: string[] = []; // every item, in the order it was handed in
+  looks = 0; // how many items the desk has looked at, for every request so far
 
-/*
- * The lost-and-found box: everything in one jumbled pile. Look at the
- * items one at a time, from the first, until you find the one you want.
- * Return how many items you looked at. If it isn't in the box, you
- * looked at every item. An empty box takes 0 looks.
- *
- * looksInBox(["Red Umbrella", "Left Mitten", "Soccer Ball"], "Left Mitten") -> 2
- * looksInBox(["Red Umbrella", "Left Mitten", "Soccer Ball"], "Purple Scarf") -> 3
- */
-export function looksInBox(box: string[], wanted: string): number {
-  return 0;
-}
+  /*
+   * An item is handed in, with its kind ("Bottles", "Clothing"...). Its tag
+   * number is how many items were handed in before it: 0, 1, 2...
+   *
+   * add("Red Umbrella", "Other") -> the first item, tag 0
+   *
+   * Growth rate: (write it here)
+   */
+  add(item: string, kind: string): void {
+    this.box.push(item);
+  }
 
-/*
- * The labeled shelves: the same things, sorted onto shelves by kind
- * ("Bottles", "Books"...). Look only on the shelf you're told, one item
- * at a time from the first, and return how many items you looked at.
- * If the item isn't on that shelf, you looked at the whole shelf.
- * If there's no shelf with that name, there was nothing to look at: 0.
- *
- * looksOnShelf(shelves, "Bottles", "Blue Water Bottle") -> 2
- * looksOnShelf(shelves, "Toys", "Yo-yo") -> 0
- */
-export function looksOnShelf(shelves: Record<string, string[]>, shelf: string, wanted: string): number {
-  return 0;
-}
+  /*
+   * A student asks for an item by its name and its kind. Return true if
+   * the desk has it, false if not. Add 1 to this.looks for every item
+   * the desk looks at.
+   *
+   * find("Blue Water Bottle", "Bottles") -> true
+   * find("Purple Scarf", "Clothing") -> false
+   *
+   * Growth rate: (write it here)
+   */
+  find(item: string, kind: string): boolean {
+    for (const thing of this.box) {
+      this.looks++;
+      if (thing === item) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-/*
- * The cubbies: one item in each numbered cubby, numbered from 0.
- * Return what's in cubby number `number`, in one step: no looking
- * through the others. If there's no cubby with that number, return
- * "empty".
- *
- * itemInCubby(["Red Umbrella", "Left Mitten"], 1) -> "Left Mitten"
- * itemInCubby(["Red Umbrella", "Left Mitten"], 5) -> "empty"
- */
-export function itemInCubby(cubbies: string[], number: number): string {
-  return "";
+  /*
+   * A student brings the tag number from the desk's log. Return that item
+   * in one step, without looking through the others. Tags start at 0. If
+   * no item has that tag, return "empty".
+   *
+   * itemWithTag(0) -> "Red Umbrella"  (the first item handed in)
+   * itemWithTag(8) -> "empty"  (when only 8 items have come in)
+   *
+   * Growth rate: (write it here)
+   */
+  itemWithTag(number: number): string {
+    return "empty";
+  }
 }

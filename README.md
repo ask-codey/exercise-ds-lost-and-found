@@ -2,11 +2,23 @@
 
 Exercise code for the lesson **Exercise: The Lost and Found** in the course *Data Structures and Big-O, Demystified* on [ask-codey.com](https://www.ask-codey.com).
 
-A school's lost-and-found keeps the same eight things three ways: in one jumbled **box**, on **shelves** labeled by kind, and in numbered **cubbies**. You'll write the code that finds things each way, and count how many items each way has to look at. There are three functions to finish:
+## The ticket
 
-- `looksInBox` (`LooksInBox` in C#, `looks_in_box` in Python): how many items you look at to find something in the box
-- `looksOnShelf` (`LooksOnShelf`, `looks_on_shelf`): how many items you look at when you only search the right shelf
-- `itemInCubby` (`ItemInCubby`, `item_in_cubby`): what's in a numbered cubby, in one step
+> **From:** the front office
+>
+> By spring the lost-and-found holds about 800 things, and at lunch 30 students line up at the desk. Each one asks for something by its name and its kind ("Blue Water Bottle, it's a bottle"), and the volunteer digs through one big box. Lunch is 30 minutes; the line doesn't make it.
+>
+> 1. **Every request is answered in 120 looks or fewer,** whether the desk has the item or not, even with 800 items. Every item the desk looks at counts as a look.
+> 2. **Every item handed in gets a tag number** in the desk's log: 0 for the first, then 1, 2, 3, in the order they arrive. A student who brings a tag number gets that item in one step, without anyone looking through the others.
+> 3. **Nothing goes missing.** Every item handed in can still be found by its name and kind, and by its tag.
+
+The code that's there is the desk as it works today, in a class called `Desk`: everything goes into one list, `box`, and `find` reads the box from the top. Three methods are yours to change:
+
+- `add` (`Add` in C#): an item is handed in, with its kind
+- `find` (`Find`): does the desk have this item? Each item it looks at adds 1 to the desk's count of looks
+- `itemWithTag` (`ItemWithTag`, `item_with_tag` in Python): the item with this tag number, in one step
+
+Seven tests check it, ending with the lunch line: 800 items handed in, every one of them asked for, and every answer in 120 looks or fewer.
 
 ## Pick your language
 
@@ -14,15 +26,15 @@ The same exercise is here in five languages. Work in the folder for the language
 
 | Folder | Your code | The tests |
 |---|---|---|
-| `csharp/` | `LostAndFound/Finder.cs` | `LostAndFound.Tests/FinderTests.cs` |
-| `java/` | `src/main/java/Finder.java` | `src/test/java/FinderTest.java` |
+| `csharp/` | `LostAndFound/Desk.cs` | `LostAndFound.Tests/DeskTests.cs` |
+| `java/` | `src/main/java/Desk.java` | `src/test/java/DeskTest.java` |
 | `python/` | `lost_and_found.py` | `test_lost_and_found.py` |
 | `javascript/` | `lost-and-found.js` | `lost-and-found.test.js` |
 | `typescript/` | `lost-and-found.ts` | `lost-and-found.test.ts` |
 
-Each function returns `0` or an empty text for now. The comment with it says what it should return, with examples. Replace the `return` line with your own code.
+The comment above each method says what it should do, with examples. Change the code, and write each method's growth rate on its **Growth rate:** line.
 
-Every folder also has a small demo program that tries your functions on the lost-and-found. You don't need to change the tests or the demo.
+Every folder also has a small demo program that tries the desk on eight items. You don't need to change the tests or the demo.
 
 ## Run it and check your work
 
@@ -72,13 +84,30 @@ node demo.ts
 npm test
 ```
 
-At first every test fails: that is expected. Each function you finish turns its tests green. A failing test's message starts with **Not yet:** and says what it expected.
+At first, 4 of the 7 tests fail: that is expected. Today's desk finds things; it's just too slow, and it doesn't know its tags yet. A failing test's message starts with **Not yet:** and says what it expected.
 
-## Tips
+<details>
+<summary>Stuck?</summary>
 
-- **Count as you go.** Start a counter at 0, and add one every time you look at an item. Stop as soon as you find the one you want.
-- **Look before you reach.** On the shelves, check that the shelf exists before you look on it.
-- **Cubbies are numbered from 0,** so eight cubbies are numbered 0 to 7. Your language lets you go straight to one by its number.
+- **Today's `find` never uses the kind** the student asked for. What if the desk kept things the way students ask for them?
+- **Where to look:** the lesson *800 Lost Items and a Line at the Desk: What a Data Structure Is* keeps the items on **shelves by kind**, one labeled list for each kind. With 800 items over 8 kinds, a shelf holds about 100, so a search of one shelf stays under 120 looks.
+- **Shelves in code:** a labeled list is a `Dictionary<string, List<string>>` in C#, a `Map<String, List<String>>` in Java, a `dict` in Python and a `Map` in JavaScript and TypeScript. In `add`, if there's no shelf for that kind yet, make an empty one first, then put the item on it.
+- **Don't throw the box away.** A tag number is a position in the order things arrived, and only the box keeps that order. Keep both: the box for tags, and the shelves for finding.
+- **A tag in one step** is the box at that position, as in *Why "Play Track 750,000" Is Instant and "Find Golden Hour" Isn't: Memory as Mailboxes*. Tags start at 0, so a number below 0, or equal to the number of items or more, has no item.
+
+</details>
+
+<details>
+<summary>Why Should I Choose This?</summary>
+
+Open this once your tests are green. The lunch line is 800 items and 30 students, every day.
+
+- **One big box, read from the top:** adding is instant, but a request can take 800 looks, and 30 of them is up to 24,000 looks in one lunch.
+- **A list kept in A to Z order by name:** finding an exact name is quick, but every item handed in has to be slotted into its place, and students who say "a water bottle" don't know the exact name.
+- **Shelves by kind, plus the box:** each request looks at one shelf, about 100 items at most, and a tag is one step into the box. What it costs: each item is filed twice, and adding takes a moment longer, which is fine for a few items a day.
+- **What would beat it:** if students always knew the exact name, a structure that goes straight from a name to its item would answer in one look. That's the hash table, in Module 5.
+
+</details>
 
 ## Hand it in
 

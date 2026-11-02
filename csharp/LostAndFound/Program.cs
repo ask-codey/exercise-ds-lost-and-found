@@ -1,18 +1,23 @@
 using LostAndFound;
 
-// Tries your methods on the lost-and-found. Run it with: dotnet run --project LostAndFound
-List<string> box = new List<string> { "Red Umbrella", "Math Textbook", "Left Mitten", "Green Water Bottle", "Bike Helmet", "Phone Charger", "Blue Water Bottle", "Soccer Ball" };
-Dictionary<string, List<string>> shelves = new Dictionary<string, List<string>>
+// Tries the desk on eight items. Run it with: dotnet run --project LostAndFound
+string[][] items =
 {
-    ["Bottles"] = new List<string> { "Green Water Bottle", "Blue Water Bottle" },
-    ["Books"] = new List<string> { "Math Textbook" },
-    ["Clothing"] = new List<string> { "Left Mitten" },
-    ["Sports"] = new List<string> { "Bike Helmet", "Soccer Ball" },
-    ["Other"] = new List<string> { "Red Umbrella", "Phone Charger" }
+    new[] { "Red Umbrella", "Other" }, new[] { "Math Textbook", "Books" }, new[] { "Left Mitten", "Clothing" },
+    new[] { "Green Water Bottle", "Bottles" }, new[] { "Bike Helmet", "Sports" }, new[] { "Phone Charger", "Other" },
+    new[] { "Blue Water Bottle", "Bottles" }, new[] { "Soccer Ball", "Sports" }
 };
-List<string> cubbies = new List<string>(box);
 
-Console.WriteLine("Box: " + string.Join(", ", box));
-Console.WriteLine("Looks in the box for Blue Water Bottle: " + Finder.LooksInBox(box, "Blue Water Bottle"));
-Console.WriteLine("Looks on the Bottles shelf for Blue Water Bottle: " + Finder.LooksOnShelf(shelves, "Bottles", "Blue Water Bottle"));
-Console.WriteLine("Cubby 6 holds: " + Finder.ItemInCubby(cubbies, 6));
+Desk desk = new Desk();
+foreach (string[] item in items)
+{
+    desk.Add(item[0], item[1]);
+}
+
+foreach (string[] request in new[] { new[] { "Blue Water Bottle", "Bottles" }, new[] { "Purple Scarf", "Clothing" } })
+{
+    int before = desk.Looks;
+    string answer = desk.Find(request[0], request[1]) ? "yes" : "no";
+    Console.WriteLine(request[0] + " (" + request[1] + "): " + answer + ", looks: " + (desk.Looks - before));
+}
+Console.WriteLine("Tag 6: " + desk.ItemWithTag(6));
